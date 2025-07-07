@@ -163,19 +163,7 @@
     </div>
   </div>
 
-  <!-- Supabase GitHub Auth -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const supabase = supabase.createClient(
-      "https://fnalqexrwcplmrlkyvbh.supabase.co", // 🔁 Replace with your project URL
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk"                    // 🔁 Replace with your anon/public key
-    );
 
-    async function signInWithGitHub() {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
-      if (error) console.error("Login error:", error.message);
-    }
-  </script>
 
   <!-- Footer -->
   <footer class="footer">
