@@ -31,6 +31,7 @@
       color: white;
       margin-right: 20px;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .navbar input[type="text"] {
@@ -120,9 +121,9 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
-    <a href="#">Log in</a>
+    <a onclick="signInWithGitHub()">Log in</a>
     <a href="#">Categories</a>
-    <a href="myprofile.html">My Profile</a> <!-- ✅ fixed link -->
+    <a href="myprofile.html">My Profile</a>
     <a href="#">Leaderboard</a>
     <a href="#">How it works</a>
     <input type="text" placeholder="Search...">
@@ -161,17 +162,20 @@
       <div class="label">Social Media Influencers</div>
     </div>
   </div>
-<button onclick="signInWithGitHub()">Sign in with GitHub</button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>
-  const supabase = supabase.createClient("https://fnalqexrwcplmrlkyvbh.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk");
+  <!-- Supabase GitHub Auth -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const supabase = supabase.createClient(
+      "https://fnalqexrwcplmrlkyvbh.supabase.co", // 🔁 Replace with your project URL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk"                    // 🔁 Replace with your anon/public key
+    );
 
-  async function signInWithGitHub() {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
-    if (error) console.error("Login error:", error.message);
-  }
-</script>
+    async function signInWithGitHub() {
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
+      if (error) console.error("Login error:", error.message);
+    }
+  </script>
 
   <!-- Footer -->
   <footer class="footer">
