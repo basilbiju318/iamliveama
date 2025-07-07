@@ -135,7 +135,6 @@
     <div><div class="circle"></div><div class="label">Social Media Influencers</div></div>
   </div>
 
-  
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-column">
@@ -165,6 +164,26 @@
       <a href="#"><i class="fab fa-reddit"></i></a>
     </div>
   </footer>
+
+  <!-- Supabase Auth Script -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+    const supabaseUrl = 'https://fnalqexrwcplmrlkyvbh.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    window.signInWithGitHub = async function () {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: 'https://basilbiju318.github.io/iamliveama/myprofile.html'
+        }
+      });
+
+      if (error) console.error("GitHub Login Error:", error.message);
+    }
+  </script>
 
 </body>
 </html>
