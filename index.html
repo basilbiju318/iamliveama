@@ -89,13 +89,6 @@
       margin: 5px 0;
     }
 
-    .footer-bottom {
-      text-align: center;
-      padding: 20px;
-      background-color: #000;
-      color: #777;
-    }
-
     .social-icons {
       display: flex;
       justify-content: center;
@@ -133,48 +126,32 @@
   <h2 style="text-align:center;">Top Celebrities</h2>
 
   <div class="circle-container">
-    <div>
-      <div class="circle"></div>
-      <div class="label">All</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Actors</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Entrepreneurs</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Athletes</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Comedians</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Musicians</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Social Media Influencers</div>
-    </div>
+    <div><div class="circle"></div><div class="label">All</div></div>
+    <div><div class="circle"></div><div class="label">Actors</div></div>
+    <div><div class="circle"></div><div class="label">Entrepreneurs</div></div>
+    <div><div class="circle"></div><div class="label">Athletes</div></div>
+    <div><div class="circle"></div><div class="label">Comedians</div></div>
+    <div><div class="circle"></div><div class="label">Musicians</div></div>
+    <div><div class="circle"></div><div class="label">Social Media Influencers</div></div>
   </div>
 
-
-<!-- Supabase GitHub Auth -->
+  <!-- Supabase GitHub Auth -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
     const supabase = supabase.createClient(
-      "https://yourproject.supabase.co", // 🔁 Replace with your project URL
-      "your-anon-key"                    // 🔁 Replace with your anon/public key
+      "https://yourproject.supabase.co",      // ✅ Replace with your Supabase URL
+      "your-anon-public-key"                  // ✅ Replace with your Supabase anon key
     );
 
     async function signInWithGitHub() {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'github' });
-      if (error) console.error("Login error:", error.message);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: window.location.origin + "/myprofile.html"  // or any page you want to go after login
+        }
+      });
+
+      if (error) console.error("GitHub Login Error:", error.message);
     }
   </script>
 
@@ -183,26 +160,22 @@
     <div class="footer-column">
       <h2>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</h2>
     </div>
-
     <div class="footer-column">
       <h4>Product</h4>
       <a href="#">How it works</a>
       <a href="#">Pricing</a>
       <a href="#">Help Center</a>
     </div>
-
     <div class="footer-column">
       <h4>Company</h4>
       <a href="#">About us</a>
       <a href="#">Contact Us</a>
     </div>
-
     <div class="footer-column">
       <h4>Privacy</h4>
       <a href="#">Terms and Conditions</a>
       <a href="#">Privacy Policy</a>
     </div>
-
     <div class="footer-column social-icons">
       <a href="#"><i class="fab fa-linkedin"></i></a>
       <a href="#" class="x-logo">𝕏</a>
