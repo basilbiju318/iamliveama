@@ -4,6 +4,35 @@
   <meta charset="UTF-8">
   <title>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient('https://fnalqexrwcplmrlkyvbh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const loginLink = document.getElementById('login-link');
+
+      // Check if user is logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        loginLink.innerText = 'Logged in';
+        loginLink.style.pointerEvents = 'none';
+      }
+
+      loginLink.addEventListener('click', async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: 'https://basilbiju318.github.io/iamliveama/' // redirect back to your live site
+          }
+        });
+
+        if (error) alert('Login failed: ' + error.message);
+      });
+    });
+  </script>
+
   <style>
     body {
       background-color: #000;
@@ -114,7 +143,7 @@
   <!-- Navbar -->
   <div class="navbar">
     <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
-    <a href="#">Log in</a>
+    <a href="#" id="login-link">Log in</a>
     <a href="#">Categories</a>
     <a href="#">Leaderboard</a>
     <a href="#">How it works</a>
