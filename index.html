@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       background-color: #000;
@@ -17,6 +18,7 @@
       align-items: center;
       padding: 15px;
       background-color: #000;
+      flex-wrap: wrap;
     }
 
     .navbar .logo {
@@ -40,6 +42,7 @@
 
     .circle-container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 30px;
       margin: 40px 0;
@@ -59,67 +62,6 @@
       text-align: center;
       margin-top: 10px;
       color: white;
-    }
-  </style>
-</head>
-<body>
-  <div class="navbar">
-    <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
-    <a href="#">Log in</a>
-    <a href="#">Categories</a>
-    <a href="#">My Profile</a>
-    <a href="#">Leaderboard</a>
-    <a href="#">How it works</a>
-    <input type="text" placeholder="Search...">
-  </div>
-
-  <h2 style="text-align:center;">Top Celebreties</h2>
-
-  <div class="circle-container">
-    <div>
-       <div>
-      <div class="circle"></div>
-      <div class="label">All</div>
-    </div>
-      <div class="circle"></div>
-      <div class="label">Actors</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Entrepreneurs</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Athletes</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Comedians</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Musicians</div>
-    </div>
-    <div>
-      <div class="circle"></div>
-      <div class="label">Social Media Influencers</div>
-    </div>
-   
-  </div>
-</body>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Footer Example</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: white;
-      font-family: Arial, sans-serif;
     }
 
     .footer {
@@ -175,6 +117,52 @@
 </head>
 <body>
 
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
+    <a href="#">Log in</a>
+    <a href="#">Categories</a>
+    <a href="myprofile.html">My Profile</a> <!-- ✅ fixed link -->
+    <a href="#">Leaderboard</a>
+    <a href="#">How it works</a>
+    <input type="text" placeholder="Search...">
+  </div>
+
+  <!-- Circles Section -->
+  <h2 style="text-align:center;">Top Celebrities</h2>
+
+  <div class="circle-container">
+    <div>
+      <div class="circle"></div>
+      <div class="label">All</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Actors</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Entrepreneurs</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Athletes</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Comedians</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Musicians</div>
+    </div>
+    <div>
+      <div class="circle"></div>
+      <div class="label">Social Media Influencers</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-column">
       <h2>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</h2>
@@ -209,6 +197,4 @@
   </footer>
 
 </body>
-</html>
-
 </html>
