@@ -7,13 +7,11 @@
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient('https://fnalqexrwcplmrlkyvbh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk');
+    const supabase = createClient('hello', 'hi'); // Replace with your actual keys
 
     document.addEventListener('DOMContentLoaded', async () => {
       const loginLink = document.getElementById('login-link');
       const logoutBtn = document.getElementById('logout-button');
-      const allCircle = document.getElementById('all-users-circle');
-      const userCountSpan = document.getElementById('user-count');
 
       const { data: { user } } = await supabase.auth.getUser();
 
@@ -21,7 +19,6 @@
         const name = user.user_metadata.full_name || user.user_metadata.name || 'User';
         const avatar = user.user_metadata.avatar_url || user.user_metadata.picture;
 
-        // Show user info and logout
         loginLink.innerHTML = `
           <img src="${avatar}" alt="Profile" style="width:28px;height:28px;border-radius:50%;vertical-align:middle;margin-right:8px;">
           <span style="vertical-align:middle;">${name}</span>
@@ -29,7 +26,6 @@
         loginLink.style.pointerEvents = 'none';
         logoutBtn.style.display = 'inline';
 
-        // Save user to Supabase
         await supabase.from('users').upsert({
           id: user.id,
           name: name,
@@ -51,23 +47,6 @@
         await supabase.auth.signOut();
         location.reload();
       });
-
-      // Fetch and display users
-      const { data: allUsers } = await supabase.from('users').select('*');
-      if (allUsers && allCircle) {
-        allCircle.innerHTML = '';
-        allUsers.forEach(u => {
-          const img = document.createElement('img');
-          img.src = u.avatar_url;
-          img.alt = u.name;
-          img.title = u.name;
-          img.style = 'width:30px;height:30px;border-radius:50%;margin:3px;';
-          allCircle.appendChild(img);
-        });
-
-        // Show user count
-        userCountSpan.textContent = `(${allUsers.length})`;
-      }
     });
   </script>
 
@@ -198,10 +177,6 @@
   <h2 style="text-align:center;">Top Celebrities</h2>
 
   <div class="circle-container">
-    <div>
-      <div class="circle" id="all-users-circle"></div>
-      <div class="label">All <span id="user-count"></span></div>
-    </div>
     <div><div class="circle"></div><div class="label">Actors</div></div>
     <div><div class="circle"></div><div class="label">Entrepreneurs</div></div>
     <div><div class="circle"></div><div class="label">Athletes</div></div>
@@ -232,11 +207,11 @@
       <a href="#">Privacy Policy</a>
     </div>
     <div class="footer-column social-icons">
-      <a href="#"><i class="fab fa-linkedin"></i></a>
-      <a href="#" class="x-logo">𝕏</a>
-      <a href="#"><i class="fab fa-youtube"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-reddit"></i></a>
+      <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://x.com/iamliveama" target="_blank" class="x-logo">𝕏</a>
+      <a href="https://www.youtube.com/@iamliveama" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.instagram.com/iamliveama/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.reddit.com/r/iamliveama/" target="_blank"><i class="fab fa-reddit"></i></a>
     </div>
   </footer>
 
