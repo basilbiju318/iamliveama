@@ -4,32 +4,59 @@
   <meta charset="UTF-8">
   <title>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabase = createClient('https://fnalqexrwcplmrlkyvbh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk');
+    const supabase = createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
 
     document.addEventListener('DOMContentLoaded', async () => {
       const loginLink = document.getElementById('login-link');
+      const allCircle = document.getElementById('all-users-circle');
 
-      // Check if user is logged in
       const { data: { user } } = await supabase.auth.getUser();
+
       if (user) {
-        loginLink.innerText = 'Logged in';
+        const name = user.user_metadata.full_name || user.user_metadata.name || 'User';
+        const avatar = user.user_metadata.avatar_url || user.user_metadata.picture;
+
+        // Show user profile in navbar
+        loginLink.innerHTML = `
+          <img src="${avatar}" alt="Profile" style="width:28px;height:28px;border-radius:50%;vertical-align:middle;margin-right:8px;">
+          <span style="vertical-align:middle;">${name}</span>
+        `;
         loginLink.style.pointerEvents = 'none';
+
+        // Save user to Supabase
+        await supabase.from('users').upsert({
+          id: user.id,
+          name: name,
+          avatar_url: avatar,
+        }, { onConflict: 'id' });
       }
 
       loginLink.addEventListener('click', async () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: 'https://basilbiju318.github.io/iamliveama/' // redirect back to your live site
+            redirectTo: 'https://basilbiju318.github.io/iamliveama/'
           }
         });
-
         if (error) alert('Login failed: ' + error.message);
       });
+
+      // Fetch all users and show in "All" circle
+      const { data: allUsers } = await supabase.from('users').select('*');
+      if (allUsers && allCircle) {
+        allCircle.innerHTML = '';
+        allUsers.forEach(u => {
+          const img = document.createElement('img');
+          img.src = u.avatar_url;
+          img.alt = u.name;
+          img.title = u.name;
+          img.style = 'width:30px;height:30px;border-radius:50%;margin:3px;';
+          allCircle.appendChild(img);
+        });
+      }
     });
   </script>
 
@@ -86,6 +113,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      flex-wrap: wrap;
     }
 
     .label {
@@ -154,7 +183,12 @@
   <h2 style="text-align:center;">Top Celebrities</h2>
 
   <div class="circle-container">
-    <div><div class="circle"></div><div class="label">All</div></div>
+    <div>
+      <div class="circle" id="all-users-circle">
+        <!-- User avatars will show here -->
+      </div>
+      <div class="label">All</div>
+    </div>
     <div><div class="circle"></div><div class="label">Actors</div></div>
     <div><div class="circle"></div><div class="label">Entrepreneurs</div></div>
     <div><div class="circle"></div><div class="label">Athletes</div></div>
