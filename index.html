@@ -1,122 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
 
-  <!-- Supabase (as module) -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabase = createClient('https://fnalqexrwcplmrlkyvbh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuYWxxZXhyd2NwbG1ybGt5dmJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4OTI0MTUsImV4cCI6MjA2NzQ2ODQxNX0.jIv6L35cdmAu6WmrzQRN2qt9P6vyLYOIxOsRAv6NAGk');
-
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
-      authDomain: "smss-am.firebaseapp.com",
-      projectId: "smss-am",
-      storageBucket: "smss-am.firebasestorage.app",
-      messagingSenderId: "335451414138",
-      appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    let confirmationResult;
-
-    window.onload = async () => {
-      // Check Supabase login
-      const { data: { user: supabaseUser } } = await supabase.auth.getUser();
-      const firebaseUser = firebase.auth().currentUser;
-
-      const isLoggedIn = supabaseUser || firebaseUser;
-
-      if (!isLoggedIn) {
-        // Set up reCAPTCHA
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-          size: 'invisible'
-        });
-        await recaptchaVerifier.render();
-        document.getElementById("auth-screen").style.display = "block";
-      } else {
-        document.getElementById("main-content").style.display = "block";
-      }
-    };
-
-    // Google login via Supabase
-    window.googleLogin = async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: location.href }
-      });
-      if (error) alert("Google login failed: " + error.message);
-    };
-
-    window.sendOTP = () => {
-      const phone = document.getElementById("phone").value;
-      firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
-        .then((result) => {
-          confirmationResult = result;
-          alert("OTP sent!");
-        })
-        .catch((error) => {
-          alert("Error: " + error.message);
-        });
-    };
-
-    window.verifyOTP = () => {
-      const code = document.getElementById("otp").value;
-      confirmationResult.confirm(code)
-        .then((result) => {
-          alert("Phone verified!");
-          location.reload();
-        })
-        .catch((error) => {
-          alert("Invalid OTP");
-        });
-    };
-  </script>
-
   <style>
     body { background: #000; color: white; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-
     #auth-screen { display: none; text-align: center; padding: 50px 20px; }
     #auth-screen input { padding: 10px; width: 240px; margin: 10px; border-radius: 5px; border: none; }
     #auth-screen button { padding: 10px 20px; margin: 10px; background: #444; color: white; border: none; border-radius: 5px; cursor: pointer; }
-
     .navbar { display: flex; align-items: center; padding: 15px; background-color: #000; flex-wrap: wrap; }
     .navbar .logo { font-size: 28px; font-weight: bold; margin-right: 30px; }
     .navbar a, .navbar button { color: white; margin-right: 20px; text-decoration: none; background: none; border: none; font: inherit; cursor: pointer; }
     .navbar input[type="text"] { padding: 8px; border-radius: 20px; border: none; width: 200px; }
-
     .circle-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 40px 0; }
     .circle { width: 130px; height: 130px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-wrap: wrap; }
     .label { text-align: center; margin-top: 10px; color: white; }
-
     .footer { background-color: #000; color: #ccc; padding: 40px; display: flex; justify-content: space-around; flex-wrap: wrap; }
     .footer-column { margin: 20px; }
     .footer-column h4 { color: white; }
     .footer-column a { display: block; color: #aaa; text-decoration: none; margin: 5px 0; }
-
     .social-icons { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
     .social-icons a { color: white; font-size: 22px; text-decoration: none; }
     .x-logo { font-family: sans-serif; font-weight: bold; font-size: 22px; }
   </style>
 </head>
-
 <body>
 
-  <!-- Auth Wall -->
+  <!-- Login Screen -->
   <div id="auth-screen">
     <h2>Login Required</h2>
-    <button onclick="googleLogin()">Login with Google</button>
-    <br><br>
     <input type="text" id="phone" placeholder="+91XXXXXXXXXX">
     <div id="recaptcha-container"></div>
     <button onclick="sendOTP()">Send OTP</button>
@@ -124,9 +43,8 @@
     <button onclick="verifyOTP()">Verify OTP</button>
   </div>
 
-  <!-- Main Website (Hidden until login) -->
+  <!-- Main Site -->
   <div id="main-content" style="display:none;">
-
     <div class="navbar">
       <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
       <a href="#">Categories</a>
@@ -160,5 +78,57 @@
     </footer>
   </div>
 
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
+      authDomain: "smss-am.firebaseapp.com",
+      projectId: "smss-am",
+      storageBucket: "smss-am.firebasestorage.app",
+      messagingSenderId: "335451414138",
+      appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    let confirmationResult;
+
+    window.onload = () => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          document.getElementById("main-content").style.display = "block";
+        } else {
+          document.getElementById("auth-screen").style.display = "block";
+          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            size: 'invisible'
+          });
+          recaptchaVerifier.render();
+        }
+      });
+    };
+
+    function sendOTP() {
+      const phone = document.getElementById("phone").value;
+      firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
+        .then(result => {
+          confirmationResult = result;
+          alert("OTP sent!");
+        })
+        .catch(error => {
+          alert("Error: " + error.message);
+        });
+    }
+
+    function verifyOTP() {
+      const code = document.getElementById("otp").value;
+      confirmationResult.confirm(code)
+        .then(result => {
+          alert("Phone verified!");
+          location.reload();
+        })
+        .catch(error => {
+          alert("Invalid OTP");
+        });
+    }
+  </script>
 </body>
 </html>
