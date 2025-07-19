@@ -1,95 +1,93 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Phone Auth Gate</title>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <style>
-      body {
-        font-family: sans-serif;
-        margin: 40px;
-      }
-      #auth-section, #otp-section {
-        margin-bottom: 20px;
-      }
-      #main-content {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Login with Phone</h2>
+<head>
+  <title>OTP Protected Site</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #mainContent { display: none; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
 
-    <div id="auth-section">
-      <input type="tel" id="phone" placeholder="+91XXXXXXXXXX" />
-      <button onclick="sendOTP()">Send OTP</button>
-    </div>
-
-    <div id="otp-section" style="display: none;">
-      <input type="text" id="otp" placeholder="Enter OTP" />
-      <button onclick="verifyOTP()">Verify OTP</button>
-    </div>
-
+  <h2>Phone Number Login</h2>
+  <div id="loginSection">
+    <input type="text" id="phone" placeholder="+91XXXXXXXXXX" />
+    <button onclick="sendOTP()">Send OTP</button>
     <div id="recaptcha-container"></div>
 
-    <hr>
-
-    <div id="main-content">
-      <h3>✅ You are authenticated!</h3>
-      <p>Now you can access the full site.</p>
-      <!-- Add your site content below -->
+    <div id="otpSection" class="hidden">
+      <input type="text" id="otp" placeholder="Enter OTP" />
+      <button onclick="verifyOTP()">Verify</button>
     </div>
+  </div>
 
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
-        authDomain: "smss-am.firebaseapp.com",
-        projectId: "smss-am",
-        storageBucket: "smss-am.appspot.com",
-        messagingSenderId: "335451414138",
-        appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
-      };
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
+  <div id="mainContent">
+    <h2>Welcome! ✅ OTP Verified</h2>
+    <p>This is your protected content.</p>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-      let confirmationResult;
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
+      authDomain: "smss-am.firebaseapp.com",
+      projectId: "smss-am",
+      storageBucket: "smss-am.firebasestorage.app",
+      messagingSenderId: "335451414138",
+      appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
+    };
 
+    firebase.initializeApp(firebaseConfig);
+
+    let confirmationResult;
+
+    window.onload = () => {
+      if (firebase.auth().currentUser) {
+        showMainContent();
+      }
+    };
+
+    function sendOTP() {
+      const phone = document.getElementById("phone").value;
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'invisible',
-        callback: function(response) {
-          // reCAPTCHA solved automatically
-        }
+        'size': 'invisible',
+        'callback': (response) => {}
       });
 
-      function sendOTP() {
-        const phoneNumber = document.getElementById("phone").value;
-        auth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
-          .then((result) => {
-            confirmationResult = result;
-            alert("OTP sent.");
-            document.getElementById("auth-section").style.display = "none";
-            document.getElementById("otp-section").style.display = "block";
-          })
-          .catch((error) => {
-            console.error("Error during OTP send:", error);
-            alert("Error: " + error.message);
-          });
-      }
+      firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
+        .then((result) => {
+          confirmationResult = result;
+          document.getElementById("otpSection").classList.remove("hidden");
+          alert("OTP sent!");
+        }).catch((error) => {
+          alert("Error: " + error.message);
+        });
+    }
 
-      function verifyOTP() {
-        const code = document.getElementById("otp").value;
-        confirmationResult.confirm(code)
-          .then((result) => {
-            const user = result.user;
-            document.getElementById("otp-section").style.display = "none";
-            document.getElementById("main-content").style.display = "block";
-            console.log("User logged in:", user.phoneNumber);
-          })
-          .catch((error) => {
-            console.error("OTP verification error:", error);
-            alert("Invalid OTP");
-          });
-      }
-    </script>
-  </body>
+    function verifyOTP() {
+      const code = document.getElementById("otp").value;
+      confirmationResult.confirm(code).then((result) => {
+        alert("Phone number verified!");
+        showMainContent();
+      }).catch((error) => {
+        alert("Invalid OTP");
+      });
+    }
+
+    function showMainContent() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        location.reload();
+      });
+    }
+  </script>
+
+</body>
 </html>
