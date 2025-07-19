@@ -1,3 +1,5 @@
+# Save the updated index.html with enforced SMS auth before showing the site
+updated_index_html = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,12 +7,14 @@
   <title>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
 
   <style>
     body { background: #000; color: white; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    #auth-screen { display: none; text-align: center; padding: 50px 20px; }
+    #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
     #auth-screen input { padding: 10px; width: 240px; margin: 10px; border-radius: 5px; border: none; }
     #auth-screen button { padding: 10px 20px; margin: 10px; background: #444; color: white; border: none; border-radius: 5px; cursor: pointer; }
     .navbar { display: flex; align-items: center; padding: 15px; background-color: #000; flex-wrap: wrap; }
@@ -31,115 +35,112 @@
 </head>
 <body>
 
-<div id="auth-screen">
-  <h2>Login Required</h2>
-  <input type="text" id="phone" placeholder="+91XXXXXXXXXX">
-  <div id="recaptcha-container"></div>
-  <button onclick="sendOTP()">Send OTP</button>
-  <input type="text" id="otp" placeholder="Enter OTP">
-  <button onclick="verifyOTP()">Verify OTP</button>
-</div>
-
-<div id="main-content" style="display:none;">
-  <div class="navbar">
-    <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
-    <a href="#">Categories</a>
-    <a href="#">Leaderboard</a>
-    <a href="#">How it works</a>
-    <input type="text" placeholder="Search...">
+  <!-- Login Screen -->
+  <div id="auth-screen">
+    <h2>Login Required</h2>
+    <input type="text" id="phone" placeholder="+91XXXXXXXXXX">
+    <div id="recaptcha-container"></div>
+    <button onclick="sendOTP()">Send OTP</button>
+    <input type="text" id="otp" placeholder="Enter OTP">
+    <button onclick="verifyOTP()">Verify OTP</button>
   </div>
 
-  <h2 style="text-align:center;">Top Celebrities</h2>
-  <div class="circle-container">
-    <div><div class="circle"></div><div class="label">Actors</div></div>
-    <div><div class="circle"></div><div class="label">Entrepreneurs</div></div>
-    <div><div class="circle"></div><div class="label">Athletes</div></div>
-    <div><div class="circle"></div><div class="label">Comedians</div></div>
-    <div><div class="circle"></div><div class="label">Musicians</div></div>
-    <div><div class="circle"></div><div class="label">Social Media Influencers</div></div>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-column"><h2>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</h2></div>
-    <div class="footer-column"><h4>Product</h4><a href="#">How it works</a><a href="#">Pricing</a><a href="#">Help Center</a></div>
-    <div class="footer-column"><h4>Company</h4><a href="#">About us</a><a href="#">Contact Us</a></div>
-    <div class="footer-column"><h4>Privacy</h4><a href="#">Terms and Conditions</a><a href="#">Privacy Policy</a></div>
-    <div class="footer-column social-icons">
-      <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="https://x.com/iamliveama" target="_blank" class="x-logo">𝕏</a>
-      <a href="https://www.youtube.com/@iamliveama" target="_blank"><i class="fab fa-youtube"></i></a>
-      <a href="https://www.instagram.com/iamliveama/" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.reddit.com/r/iamliveama/" target="_blank"><i class="fab fa-reddit"></i></a>
+  <!-- Main Site -->
+  <div id="main-content" style="display:none;">
+    <div class="navbar">
+      <div class="logo">𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</div>
+      <a href="#">Categories</a>
+      <a href="#">Leaderboard</a>
+      <a href="#">How it works</a>
+      <input type="text" placeholder="Search...">
     </div>
-  </footer>
-</div>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
-    authDomain: "smss-am.firebaseapp.com",
-    projectId: "smss-am",
-    storageBucket: "smss-am.firebasestorage.app",
-    messagingSenderId: "335451414138",
-    appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
-  };
+    <h2 style="text-align:center;">Top Celebrities</h2>
+    <div class="circle-container">
+      <div><div class="circle"></div><div class="label">Actors</div></div>
+      <div><div class="circle"></div><div class="label">Entrepreneurs</div></div>
+      <div><div class="circle"></div><div class="label">Athletes</div></div>
+      <div><div class="circle"></div><div class="label">Comedians</div></div>
+      <div><div class="circle"></div><div class="label">Musicians</div></div>
+      <div><div class="circle"></div><div class="label">Social Media Influencers</div></div>
+    </div>
 
-  firebase.initializeApp(firebaseConfig);
-  let confirmationResult;
+    <footer class="footer">
+      <div class="footer-column"><h2>𝗶𝗮𝗺𝗹𝗶𝘃𝗲𝗮𝗺𝗮</h2></div>
+      <div class="footer-column"><h4>Product</h4><a href="#">How it works</a><a href="#">Pricing</a><a href="#">Help Center</a></div>
+      <div class="footer-column"><h4>Company</h4><a href="#">About us</a><a href="#">Contact Us</a></div>
+      <div class="footer-column"><h4>Privacy</h4><a href="#">Terms and Conditions</a><a href="#">Privacy Policy</a></div>
+      <div class="footer-column social-icons">
+        <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://x.com/iamliveama" target="_blank" class="x-logo">𝕏</a>
+        <a href="https://www.youtube.com/@iamliveama" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.instagram.com/iamliveama/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.reddit.com/r/iamliveama/" target="_blank"><i class="fab fa-reddit"></i></a>
+      </div>
+    </footer>
+  </div>
 
-  window.onload = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("auth-screen").style.display = "none";
-      } else {
-        document.getElementById("auth-screen").style.display = "block";
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-          size: 'invisible'
-        });
-        recaptchaVerifier.render();
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTAUJVDMx3Gs970gr962oi3rsHNLdm8nU",
+      authDomain: "smss-am.firebaseapp.com",
+      projectId: "smss-am",
+      storageBucket: "smss-am.firebasestorage.app",
+      messagingSenderId: "335451414138",
+      appId: "1:335451414138:web:5a86b5fb71453fe698e5c3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    let confirmationResult;
+
+    window.onload = () => {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          document.getElementById("auth-screen").style.display = "none";
+          document.getElementById("main-content").style.display = "block";
+        } else {
+          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            size: 'invisible'
+          });
+          recaptchaVerifier.render();
+        }
+      });
+    };
+
+    function sendOTP() {
+      const phone = document.getElementById("phone").value;
+      if (!phone.startsWith('+')) {
+        alert("Phone number must start with country code, e.g. +91XXXXXXXXXX");
+        return;
       }
-    });
-  };
-
-  function sendOTP() {
-    const phone = document.getElementById("phone").value.trim();
-    if (!phone.match(/^\+\d{10,15}$/)) {
-      alert("Enter phone number in format +91XXXXXXXXXX");
-      return;
-    }
-
-    firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
-      .then(result => {
-        confirmationResult = result;
-        alert("OTP sent!");
-      })
-      .catch(error => {
-        alert("Error: " + error.message);
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier.render().then(widgetId => {
-          grecaptcha.reset(widgetId);
+      firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
+        .then(result => {
+          confirmationResult = result;
+          alert("OTP sent!");
+        })
+        .catch(error => {
+          alert("Error: " + error.message);
         });
-      });
-  }
-
-  function verifyOTP() {
-    const code = document.getElementById("otp").value.trim();
-    if (!code) {
-      alert("Please enter the OTP");
-      return;
     }
 
-    confirmationResult.confirm(code)
-      .then(result => {
-        alert("Phone verified!");
-        location.reload();
-      })
-      .catch(error => {
-        alert("Invalid OTP");
-      });
-  }
-</script>
-
+    function verifyOTP() {
+      const code = document.getElementById("otp").value;
+      confirmationResult.confirm(code)
+        .then(result => {
+          alert("Phone verified!");
+          document.getElementById("auth-screen").style.display = "none";
+          document.getElementById("main-content").style.display = "block";
+        })
+        .catch(error => {
+          alert("Invalid OTP");
+        });
+    }
+  </script>
 </body>
 </html>
+"""
+
+with open("/mnt/data/index_final.html", "w") as f:
+    f.write(updated_index_html)
+
+"/mnt/data/index_final.html"
