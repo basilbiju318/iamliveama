@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 const accountSid = 'AC038a035d087420dfb91b2765773c81bd';
 const authToken = '15070100346dc33a44c452623436cb02';
-const fromPhone = '+YOUR_TWILIO_NUMBER'; // Replace this with your Twilio number (e.g. "+1415xxxxxxx")
+const fromPhone = '+18146795774'; // Your purchased Twilio number
 
 const client = twilio(accountSid, authToken);
 
